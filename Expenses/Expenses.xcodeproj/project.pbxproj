@@ -17,8 +17,9 @@
 		CB1EA90630119EBE00AC66F4 /* ReceiptImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA8F530119EBE00AC66F4 /* ReceiptImageStore.swift */; };
 		CB1EA90730119EBE00AC66F4 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA8F330119EBE00AC66F4 /* Trip.swift */; };
 		CB1EA90830119EBE00AC66F4 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA8F130119EBE00AC66F4 /* Expense.swift */; };
-		CB1EA90930119EBE00AC66F4 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA8F930119EBE00AC66F4 /* AddExpenseView.swift */; };
 		CB1EA90A30119EBE00AC66F4 /* TripListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA8FD30119EBE00AC66F4 /* TripListView.swift */; };
+		CBE1B7903011C9A8009C3A89 /* ReceiptFullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1B78F3011C9A8009C3A89 /* ReceiptFullScreenView.swift */; };
+		CBE1B7913011C9A8009C3A89 /* ExpenseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1B78E3011C9A8009C3A89 /* ExpenseFormView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,12 +50,13 @@
 		CB1EA8F530119EBE00AC66F4 /* ReceiptImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptImageStore.swift; sourceTree = "<group>"; };
 		CB1EA8F630119EBE00AC66F4 /* ReceiptScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptScannerView.swift; sourceTree = "<group>"; };
 		CB1EA8F730119EBE00AC66F4 /* ReceiptTextExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptTextExtractor.swift; sourceTree = "<group>"; };
-		CB1EA8F930119EBE00AC66F4 /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
 		CB1EA8FA30119EBE00AC66F4 /* AddTripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTripView.swift; sourceTree = "<group>"; };
 		CB1EA8FB30119EBE00AC66F4 /* ExpenseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRowView.swift; sourceTree = "<group>"; };
 		CB1EA8FC30119EBE00AC66F4 /* TripDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripDetailView.swift; sourceTree = "<group>"; };
 		CB1EA8FD30119EBE00AC66F4 /* TripListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripListView.swift; sourceTree = "<group>"; };
 		CB1EA90F3011A25300AC66F4 /* Expenses-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Expenses-Info.plist"; sourceTree = "<group>"; };
+		CBE1B78E3011C9A8009C3A89 /* ExpenseFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseFormView.swift; sourceTree = "<group>"; };
+		CBE1B78F3011C9A8009C3A89 /* ReceiptFullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptFullScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -142,7 +144,8 @@
 		CB1EA8FE30119EBE00AC66F4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CB1EA8F930119EBE00AC66F4 /* AddExpenseView.swift */,
+				CBE1B78E3011C9A8009C3A89 /* ExpenseFormView.swift */,
+				CBE1B78F3011C9A8009C3A89 /* ReceiptFullScreenView.swift */,
 				CB1EA8FA30119EBE00AC66F4 /* AddTripView.swift */,
 				CB1EA8FB30119EBE00AC66F4 /* ExpenseRowView.swift */,
 				CB1EA8FC30119EBE00AC66F4 /* TripDetailView.swift */,
@@ -302,7 +305,8 @@
 				CB1EA90630119EBE00AC66F4 /* ReceiptImageStore.swift in Sources */,
 				CB1EA90730119EBE00AC66F4 /* Trip.swift in Sources */,
 				CB1EA90830119EBE00AC66F4 /* Expense.swift in Sources */,
-				CB1EA90930119EBE00AC66F4 /* AddExpenseView.swift in Sources */,
+				CBE1B7903011C9A8009C3A89 /* ReceiptFullScreenView.swift in Sources */,
+				CBE1B7913011C9A8009C3A89 /* ExpenseFormView.swift in Sources */,
 				CB1EA90A30119EBE00AC66F4 /* TripListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
