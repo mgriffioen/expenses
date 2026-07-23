@@ -5,6 +5,7 @@ struct TripDetailView: View {
     let trip: Trip
     @Environment(\.modelContext) private var context
     @State private var isAddingExpense = false
+    @State private var editingExpense: Expense?
 
     private var sortedExpenses: [Expense] {
         trip.expenses.sorted { $0.date > $1.date }
@@ -21,7 +22,12 @@ struct TripDetailView: View {
             }
             Section("Expenses") {
                 ForEach(sortedExpenses) { expense in
-                    ExpenseRowView(expense: expense)
+                    Button {
+                        editingExpense = expense
+                    } label: {
+                        ExpenseRowView(expense: expense)
+                    }
+                    .buttonStyle(.plain)
                 }
                 .onDelete(perform: deleteExpenses)
             }
@@ -37,7 +43,10 @@ struct TripDetailView: View {
             }
         }
         .sheet(isPresented: $isAddingExpense) {
-            AddExpenseView(trip: trip)
+            ExpenseFormView(trip: trip)
+        }
+        .sheet(item: $editingExpense) { expense in
+            ExpenseFormView(trip: trip, expenseToEdit: expense)
         }
     }
 

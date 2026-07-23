@@ -26,6 +26,10 @@ struct ExpenseRowView: View {
             }
             Spacer()
             Text(expense.amount, format: .currency(code: "USD"))
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(.tertiary)
         }
+        .contentShape(Rectangle())
     }
 }

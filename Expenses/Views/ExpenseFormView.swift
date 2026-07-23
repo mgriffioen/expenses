@@ -1,8 +1,12 @@
 import SwiftUI
 import SwiftData
 
-struct AddExpenseView: View {
+/// Handles both creating a new expense and editing an existing one,
+/// depending on whether `expenseToEdit` is provided.
+struct ExpenseFormView: View {
     let trip: Trip
+    var expenseToEdit: Expense?
+
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
 
@@ -12,9 +16,30 @@ struct AddExpenseView: View {
     @State private var category = ExpenseCategory.other
     @State private var notes = ""
     @State private var receiptImage: UIImage?
+    @State private var existingReceiptFilename: String?
+    @State private var didChangeReceipt = false
 
     @State private var isScanning = false
     @State private var isExtracting = false
+    @State private var showDeleteConfirmation = false
+
+    private var isEditing: Bool { expenseToEdit != nil }
+
+    init(trip: Trip, expenseToEdit: Expense? = nil) {
+        self.trip = trip
+        self.expenseToEdit = expenseToEdit
+        if let expense = expenseToEdit {
+            _merchant = State(initialValue: expense.merchant)
+            _amountText = State(initialValue: "\(expense.amount)")
+            _date = State(initialValue: expense.date)
+            _category = State(initialValue: expense.category)
+            _notes = State(initialValue: expense.notes)
+            _existingReceiptFilename = State(initialValue: expense.receiptFilename)
+            if let filename = expense.receiptFilename {
+                _receiptImage = State(initialValue: ReceiptImageStore.load(filename))
+            }
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -50,8 +75,15 @@ struct AddExpenseView: View {
                     }
                     TextField("Notes", text: $notes, axis: .vertical)
                 }
+                if isEditing {
+                    Section {
+                        Button("Delete Expense", role: .destructive) {
+                            showDeleteConfirmation = true
+                        }
+                    }
+                }
             }
-            .navigationTitle("New Expense")
+            .navigationTitle(isEditing ? "Edit Expense" : "New Expense")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
@@ -68,12 +100,21 @@ struct AddExpenseView: View {
                 )
                 .ignoresSafeArea()
             }
+            .confirmationDialog(
+                "Delete this expense?",
+                isPresented: $showDeleteConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Delete", role: .destructive) { deleteExpense() }
+                Button("Cancel", role: .cancel) {}
+            }
         }
     }
 
     private func handleScan(_ image: UIImage) {
         isScanning = false
         receiptImage = image
+        didChangeReceipt = true
         isExtracting = true
         ReceiptTextExtractor.extract(from: image) { extracted in
             DispatchQueue.main.async {
@@ -81,7 +122,7 @@ struct AddExpenseView: View {
                 if let total = extracted.suggestedTotal {
                     amountText = "\(total)"
                 }
-                if let name = extracted.suggestedMerchant, merchant.isEmpty {
+                if let name = extracted.suggestedMerchant {
                     merchant = name
                 }
                 if let extractedDate = extracted.suggestedDate {
@@ -93,17 +134,43 @@ struct AddExpenseView: View {
 
     private func save() {
         guard let amount = Decimal(string: amountText) else { return }
-        let receiptFilename = receiptImage.flatMap { ReceiptImageStore.save($0) }
-        let expense = Expense(
-            merchant: merchant,
-            amount: amount,
-            date: date,
-            category: category,
-            notes: notes,
-            receiptFilename: receiptFilename,
-            trip: trip
-        )
-        context.insert(expense)
+
+        var receiptFilename = existingReceiptFilename
+        if didChangeReceipt {
+            if let existingReceiptFilename {
+                ReceiptImageStore.delete(existingReceiptFilename)
+            }
+            receiptFilename = receiptImage.flatMap { ReceiptImageStore.save($0) }
+        }
+
+        if let expense = expenseToEdit {
+            expense.merchant = merchant
+            expense.amount = amount
+            expense.date = date
+            expense.category = category
+            expense.notes = notes
+            expense.receiptFilename = receiptFilename
+        } else {
+            let expense = Expense(
+                merchant: merchant,
+                amount: amount,
+                date: date,
+                category: category,
+                notes: notes,
+                receiptFilename: receiptFilename,
+                trip: trip
+            )
+            context.insert(expense)
+        }
+        dismiss()
+    }
+
+    private func deleteExpense() {
+        guard let expense = expenseToEdit else { return }
+        if let filename = expense.receiptFilename {
+            ReceiptImageStore.delete(filename)
+        }
+        context.delete(expense)
         dismiss()
     }
 }
