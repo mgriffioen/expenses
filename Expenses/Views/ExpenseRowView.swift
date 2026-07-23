@@ -3,15 +3,23 @@ import SwiftData
 
 struct ExpenseRowView: View {
     let expense: Expense
+    @State private var isShowingReceipt = false
 
     var body: some View {
+        let receiptImage = expense.receiptFilename.flatMap { ReceiptImageStore.load($0) }
+
         HStack {
-            if let filename = expense.receiptFilename, let image = ReceiptImageStore.load(filename) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+            if let receiptImage {
+                Button {
+                    isShowingReceipt = true
+                } label: {
+                    Image(uiImage: receiptImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                }
+                .buttonStyle(.plain)
             } else {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(.quaternary)
@@ -31,5 +39,10 @@ struct ExpenseRowView: View {
                 .foregroundStyle(.tertiary)
         }
         .contentShape(Rectangle())
+        .fullScreenCover(isPresented: $isShowingReceipt) {
+            if let receiptImage {
+                ReceiptFullScreenView(image: receiptImage)
+            }
+        }
     }
 }
