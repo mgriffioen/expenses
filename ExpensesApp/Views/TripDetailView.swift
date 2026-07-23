@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct TripDetailView: View {
     let trip: Trip

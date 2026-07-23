@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct AddTripView: View {
     @Environment(\.modelContext) private var context
